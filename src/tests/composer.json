@@ -1,0 +1,13 @@
+{
+  "autoload": {
+    "psr-4": {
+      "Experience\\Article\\App\\": "../article/app",
+      "Experience\\Article\\Tests\\": "./",
+      "Experience\\Article\\Tests\\App\\": "./app/"
+    }
+  },
+  "require-dev": {
+    "phpunit/phpunit": "4.8.*",
+    "mockery/mockery": "0.9.*"
+  }
+}

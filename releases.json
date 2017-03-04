@@ -1,0 +1,13 @@
+[
+  {
+    "date": "2017-03-04T00:00:00+0000",
+    "downloadUrl": "https://github.com/experience/article.craft-plugin/releases/download/0.0.0/article-0.0.0.zip",
+    "notes": [
+      "# Initial Release #",
+      "[Added] Something added.",
+      "[Changed] Something changed.",
+      "[Fixed] Something fixed."
+    ],
+    "version": "0.0.0"
+  }
+]
