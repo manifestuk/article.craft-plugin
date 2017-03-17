@@ -1,6 +1,5 @@
 <?php namespace Experience\Article\App\ServiceProviders;
 
-use Craft\WebApp;
 use League\Container\ContainerInterface;
 use League\Container\ServiceProvider\AbstractServiceProvider;
 use Experience\Article\App\Utilities\Logger;
@@ -20,16 +19,16 @@ class PluginServiceProvider extends AbstractServiceProvider
     protected $container;
 
     /**
-     * @var WebApp
+     * @var \Craft\ConsoleApp|\Craft\WebApp
      */
     protected $craft;
 
     /**
      * Constructor.
      *
-     * @param WebApp $craft
+     * @param \Craft\ConsoleApp|\Craft\WebApp $craft
      */
-    public function __construct(WebApp $craft)
+    public function __construct($craft)
     {
         $this->craft = $craft;
     }
