@@ -149,6 +149,19 @@ class ArticlePlugin extends BasePlugin
     }
 
     /**
+     * Returns the settings page HTML.
+     *
+     * @return string
+     */
+    public function getSettingsHtml()
+    {
+        return craft()->templates->render('article/settings', [
+            'templatesDirectory' => CRAFT_TEMPLATES_PATH,
+            'settings'           => $this->getSettings(),
+        ]);
+    }
+
+    /**
      * Returns a boolean indicating whether the plugin has it's own control
      * panel section.
      *
@@ -157,5 +170,30 @@ class ArticlePlugin extends BasePlugin
     public function hasCpSection()
     {
         return false;
+    }
+
+    /**
+     * Returns a custom settings model, so that we can apply custom validation.
+     *
+     * @return Article_SettingsModel
+     */
+    protected function getSettingsModel()
+    {
+        return new Article_SettingsModel($this->defineSettings());
+    }
+
+    /**
+     * Defines the plugin settings.
+     *
+     * @return array
+     */
+    protected function defineSettings()
+    {
+        return [
+            'templatesPath' => [
+                'type'     => AttributeType::String,
+                'required' => true,
+            ],
+        ];
     }
 }
