@@ -32,3 +32,13 @@ Each release of Article is [automatically tested][build-status] against PHP 5.5 
 
 
 ## Usage ##
+
+
+## Credits ##
+[Newspaper icon][icon] by [unlimicon][icon-author] from the [Noun Project][noun-project].
+
+[icon]: https://thenounproject.com/term/newspaper/697578
+[icon-author]: https://thenounproject.com/unlimicon/
+[noun-project]:https://thenounproject.com 
+
+
