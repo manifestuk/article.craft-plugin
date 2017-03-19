@@ -44,8 +44,7 @@ class ArticlePlugin extends BasePlugin
     {
         static::$container = new Container();
         static::$container->addServiceProvider(
-            new PluginServiceProvider(craft())
-        );
+            new PluginServiceProvider(craft(), $this));
     }
 
     /**
