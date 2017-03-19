@@ -44,8 +44,7 @@ class ArticlePlugin extends BasePlugin
     {
         static::$container = new Container();
         static::$container->addServiceProvider(
-            new PluginServiceProvider(craft())
-        );
+            new PluginServiceProvider(craft(), $this));
     }
 
     /**
@@ -195,5 +194,15 @@ class ArticlePlugin extends BasePlugin
                 'required' => true,
             ],
         ];
+    }
+
+    /**
+     * Registers the Twig extension.
+     *
+     * @return ArticleTwigExtension
+     */
+    public function addTwigExtension()
+    {
+        return new ArticleTwigExtension();
     }
 }

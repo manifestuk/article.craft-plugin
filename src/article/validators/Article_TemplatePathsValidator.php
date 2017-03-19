@@ -17,13 +17,6 @@ namespace Craft;
 class Article_TemplatePathsValidator extends \CValidator
 {
     /**
-     * The path validator.
-     *
-     * @var \Experience\Article\App\Helpers\TemplatePathValidator
-     */
-    protected $pathValidator;
-
-    /**
      * The translation helper.
      *
      * @var \Experience\Article\App\Helpers\TranslationHelper
@@ -35,9 +28,7 @@ class Article_TemplatePathsValidator extends \CValidator
      */
     public function __construct()
     {
-        $container = ArticlePlugin::$container;
-        $this->pathValidator = $container->get('TemplatePathValidator');
-        $this->translationHelper = $container->get('TranslationHelper');
+        $this->translationHelper = ArticlePlugin::$container->get('TranslationHelper');
     }
 
     /**
@@ -48,9 +39,10 @@ class Article_TemplatePathsValidator extends \CValidator
      */
     protected function validateAttribute($object, $attribute)
     {
-        $value = $object->$attribute;
+        $templatesPath = $object->$attribute;
+        $fullPath = implode('/', [CRAFT_TEMPLATES_PATH, $templatesPath]);
 
-        if ($value && !$this->pathValidator->validatePath($value)) {
+        if (!IOHelper::folderExists($fullPath)) {
             $message = $this->translationHelper->translate('Invalid templates path.');
             $this->addError($object, $attribute, $message);
         }

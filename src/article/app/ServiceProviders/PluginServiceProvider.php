@@ -1,6 +1,7 @@
 <?php namespace Experience\Article\App\ServiceProviders;
 
-use Experience\Article\App\Helpers\TemplatePathValidator;
+use Craft\ArticlePlugin;
+use Experience\Article\App\Helpers\TemplatesHelper;
 use Experience\Article\App\Helpers\TranslationHelper;
 use League\Container\ContainerInterface;
 use League\Container\ServiceProvider\AbstractServiceProvider;
@@ -9,32 +10,43 @@ use Experience\Article\App\Utilities\Logger;
 class PluginServiceProvider extends AbstractServiceProvider
 {
     /**
+     * The keys stored in the IoC container.
+     *
      * @var array
      */
-    protected $provides = [
-        'Logger',
-        'TemplatePathValidator',
-        'TranslationHelper',
-    ];
+    protected $provides = ['Logger', 'TemplatesHelper', 'TranslationHelper'];
 
     /**
+     * The IoC container.
+     *
      * @var ContainerInterface
      */
     protected $container;
 
     /**
+     * The Craft application.
+     *
      * @var \Craft\ConsoleApp|\Craft\WebApp
      */
     protected $craft;
 
     /**
+     * The main plugin.
+     *
+     * @var ArticlePlugin
+     */
+    protected $plugin;
+
+    /**
      * Constructor.
      *
      * @param \Craft\ConsoleApp|\Craft\WebApp $craft
+     * @param ArticlePlugin                   $plugin
      */
-    public function __construct($craft)
+    public function __construct($craft, ArticlePlugin $plugin)
     {
         $this->craft = $craft;
+        $this->plugin = $plugin;
     }
 
     /**
@@ -43,7 +55,7 @@ class PluginServiceProvider extends AbstractServiceProvider
     public function register()
     {
         $this->initializeLogger();
-        $this->initializeTemplatePathValidator();
+        $this->initializeTemplatesHelper();
         $this->initializeTranslationHelper();
     }
 
@@ -58,11 +70,14 @@ class PluginServiceProvider extends AbstractServiceProvider
     /**
      * Initialises the path validator.
      */
-    protected function initializeTemplatePathValidator()
+    protected function initializeTemplatesHelper()
     {
         $this->container->add(
-            'TemplatePathValidator',
-            new TemplatePathValidator(CRAFT_TEMPLATES_PATH)
+            'TemplatesHelper',
+            new TemplatesHelper(
+                $this->craft->templates,
+                $this->plugin->getSettings()
+            )
         );
     }
 

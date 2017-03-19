@@ -1,7 +1,7 @@
 {
   "name": "Article",
   "description": "Article eases the pain of rendering Matrix and Markdown-powered content.",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "developer": "Experience",
   "developerUrl": "https://experiencehq.net",
   "documentationUrl": "https://github.com/experience/article.craft-plugin/blob/master/README.md",
