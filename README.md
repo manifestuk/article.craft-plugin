@@ -84,6 +84,7 @@ Article exposes a single Twig filter, `renderArticle`.
 Note that, unlike the template variable, you _do not_ need to use the `raw` filter.
 
 ## Gotchas ##
+### Markdown inside HTML tags ###
 Article isn't a mind-reader, and it doesn't attempt to change the way Markdown works. That way madness lies.
 
 As such, if you want to wrap your content with HTML tags, but still parse it as Markdown, you'll need to let Article (or, more precisely, PHP Markdown Extra) know.
@@ -99,6 +100,67 @@ This text is _italic_, and wrapped in paragraph tags.
 ```
 
 PHP Markdown Extra automatically removes the `markdown="1"` attribute, ensuring your HTML remains nice and clean.
+
+### Whitespace still matters ###
+Assuming you're not using the `raw` filter in your block templates, Twig will still auto-escape certain characters. This can cause problems when it comes time to convert your carefully-crafted Markdown to HTML.
+
+Take the following Markdown-formatted content, for example:
+
+```
+Buster's in what we like to call a light to no coma. In layman's terms, it might be considered a very heavy nap.
+
+> Excuse me, do these effectively hide my thunder?
+
+How am I supposed to find someone willing to go into that musty old claptrap?
+```
+
+You would expect it to output something like this:
+
+```
+<p>Buster's in what we like to call a light to no coma. In layman's terms, it might be considered a very heavy nap.</p>
+
+<blockquote>
+    <p>Excuse me, do these effectively hide my thunder?</p>
+</blockquote>
+
+<p>How am I supposed to find someone willing to go into that musty old claptrap?</p>
+```
+
+However, if your template is as-follows, the quote will fail to render correctly:
+
+```
+<div markdown="1">
+{{ body }}
+</div>
+```
+
+"What in the name of Gruber?", you may very well demand.
+
+Well, it turns out that the line-break after the `div` will prompt Twig to auto-escape the `>`. As a result, the Markdown parser will never convert it to a `blockquote`.
+
+There are a couple of ways around this:
+
+```
+{# Option one: use the `raw` filter #}
+<div markdown="1">
+{{ body|raw }}
+</div>
+
+{# Option two: remove the line-breaks #}
+<div markdown="1">{{ body }}</div>
+```
+
+Note that the following, _will not_ work, for reasons best known to Twig:
+
+```
+{# Epic fail #}
+<div markdown="1">
+{{- body -}}
+</div>
+```
+
+It's enough to make you use a WYSIWYG.
+
 
 ## Credits ##
 [Newspaper icon][icon] by [unlimicon][icon-author] from the [Noun Project][noun-project].
