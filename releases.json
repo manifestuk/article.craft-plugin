@@ -1,13 +1,14 @@
 [
   {
-    "date": "2017-03-04T00:00:00+0000",
-    "downloadUrl": "https://github.com/experience/article.craft-plugin/releases/download/0.0.0/article-0.0.0.zip",
+    "date": "2017-03-19T17:00:00+0000",
+    "downloadUrl": "https://github.com/experience/article.craft-plugin/releases/download/1.0.0/article-1.0.0.zip",
     "notes": [
       "# Initial Release #",
-      "[Added] Something added.",
-      "[Changed] Something changed.",
-      "[Fixed] Something fixed."
+      "[Added] Implement `render` service method, to render a Matrix field containing Markdown-formatted content.",
+      "[Added] Implement `render` template variable.",
+      "[Added] Implement `renderArticle` Twig filter.",
+      "[Added] Document requirements, configuration, and usage."
     ],
-    "version": "0.0.0"
+    "version": "1.0.0"
   }
 ]
