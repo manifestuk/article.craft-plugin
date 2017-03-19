@@ -195,4 +195,14 @@ class ArticlePlugin extends BasePlugin
             ],
         ];
     }
+
+    /**
+     * Registers the Twig extension.
+     *
+     * @return ArticleTwigExtension
+     */
+    public function addTwigExtension()
+    {
+        return new ArticleTwigExtension();
+    }
 }
