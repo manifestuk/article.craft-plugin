@@ -2,20 +2,14 @@
 
 [![Build Status](https://travis-ci.org/experience/article.craft-plugin.svg?branch=master)](https://travis-ci.org/experience/article.craft-plugin)
 
-Matrix is an incredibly powerful way of building "article" pages comprised of different content blocks; text, quotes, images, code, and so forth.
+Article has been built to solve a very specific problem: parsing Markdown-formatted content in Matrix fields. In particular, Markdown-formatted content which contains footnotes.
 
-Markdown is perfect for writing textual content quickly and intuitively, without getting lost in WYSIWONT hell.
+You may be wondering why that requires a plugin.
 
-Matrix and Markdown must be a match made in heaven, right? Not quite.
-
-When you're authoring the content, it all works splendidly. When it comes time to render everything on the page, it all becomes rather tricky.
-
-Accidentally included a bit of whitespace in your template, in just the wrong place? Well done, your entire article is now a code block. Working with footnotes? Splendid, you've now got footnotes at the bottom of each Matrix block, rather than at the end of the article.
-
-It's possible, but it's painful. Article isn't a magic bullet, but it does relieve the worst suffering.
+The truth is, it doesn't. You can achieve the same end result through a careful combination of Twig macros, includes, shouting, and despair. Article is just easier.
 
 ## Requirements ##
-Article converts your Matrix field into a Markdown string, and renders it using [Smartdown][smartdown]. As such, you must have Smartdown version 2.1.0 or greater installed and activated in order to use Article.
+Article uses [Smartdown][smartdown] to render your Markdown-formatted content. You must have version 2.1.0 or above installed and activated.
 
 [smartdown]: https://github.com/experience/smartdown.craft-plugin "Bringing the unbridled joy of Markdown Extra and Smartypants to your Craft websites."
 
@@ -35,21 +29,7 @@ Each release of Article is [automatically tested][build-status] against PHP 5.5 
 ## Configuration ##
 Article makes no assumptions regarding the structure of your Matrix field, or the templates used to render the content.
 
-All you need to do is tell Article where to find your templates, relative to the `CRAFT_TEMPLATES_PATH`, by configuring the "templates path" on the Article settings page.
-
-### How it works ###
-Article looks in your templates directory for a template which matches the handle of the current Matrix block.
-
-For example, let's say you tell Article that your templates live in the `articles/_blocks` directory, and your Matrix field contains a block with the handle `text`.
-
-Article will look for the following templates. If one of them exists, it will use it to render the Matrix block:
-
-- `articles/_blocks/text.html`
-- `articles/_blocks/text.twig`
-
-The supported template extensions are controlled by [Craft's `defaultTemplateExtensions` config setting][template-extensions].
-
-[template-extensions]: https://craftcms.com/docs/config-settings#defaultTemplateExtensions
+You just need to tell Article where to find your templates, relative to the `CRAFT_TEMPLATES_PATH`, by configuring the "templates path" on the Article settings page.
 
 ## Usage ##
 There are three ways to use Article:
@@ -83,11 +63,51 @@ Article exposes a single Twig filter, `renderArticle`.
 
 Note that, unlike the template variable, you _do not_ need to use the `raw` filter.
 
-## Gotchas ##
-### Markdown inside HTML tags ###
-Article isn't a mind-reader, and it doesn't attempt to change the way Markdown works. That way madness lies.
+## Templates ##
 
-As such, if you want to wrap your content with HTML tags, but still parse it as Markdown, you'll need to let Article (or, more precisely, PHP Markdown Extra) know.
+### Overview ###
+When it comes time to parse your Matrix field, Article uses the templates in your templates directory to render the content of each Matrix block.
+
+In short, Article looks for a file with the same name as the `handle` of the Matrix block.
+
+For example, let's say your templates directory is `articles/_blocks`, and your Matrix block has a `handle` of "text".
+
+In this case, Article will look for the following templates. If one of them exists, it will use it to render the Matrix block:
+
+- `articles/_blocks/text.html`
+- `articles/_blocks/text.twig`
+
+The supported template extensions are controlled by [Craft's `defaultTemplateExtensions` config setting][template-extensions].
+
+[template-extensions]: https://craftcms.com/docs/config-settings#defaultTemplateExtensions
+
+### The `block` template variable ###
+Each template has access to a single variable, `block`, which is the MatrixBlockModel for the current block.
+
+So, if your `text` block type contains a `body` field, you can access it as follows:
+
+```
+{{ block.body }}
+```
+
+## Tips and tricks ##
+Article isn't a mind-reader, and it doesn't make any assumptions regarding the content of your templates.
+
+This section includes a few tips and tricks, which should make it a little easier to author Article-friendly templates.
+
+### Use the `raw` filter ###
+Apply the `raw` filter to Markdown-formatted content, as follows:
+
+```
+{{ block.markdownField|raw }}
+```
+
+If you don't Twig will try its utmost to convert your carefully crafted Markdown into HTML entities, resulting in non-parsed Markdown links, quotes, and so forth.
+
+Applying the `raw` filter is a simple fix, which will save you countless headaches.
+
+### Tell Article if you have Markdown inside HTML ###
+If you wrap your Markdown-formatted content with HTML tags, you'll need to let Article (or, more precisely, PHP Markdown Extra) know.
 
 You do this by adding [the `markdown="1"` attribute][markdown-attribute] to the wrapping tag:
 
@@ -101,66 +121,20 @@ This text is _italic_, and wrapped in paragraph tags.
 
 PHP Markdown Extra automatically removes the `markdown="1"` attribute, ensuring your HTML remains nice and clean.
 
-### Whitespace still matters ###
-Assuming you're not using the `raw` filter in your block templates, Twig will still auto-escape certain characters. This can cause problems when it comes time to convert your carefully-crafted Markdown to HTML.
+### Eliminate whitespace ###
+Markdown is _very_ whitespace-sensitive. If you suddenly find your content riddled with unwanted code blocks, it's very likely that leading whitespace is the culprit.
 
-Take the following Markdown-formatted content, for example:
-
-```
-Buster's in what we like to call a light to no coma. In layman's terms, it might be considered a very heavy nap.
-
-> Excuse me, do these effectively hide my thunder?
-
-How am I supposed to find someone willing to go into that musty old claptrap?
-```
-
-You would expect it to output something like this:
-
-```
-<p>Buster's in what we like to call a light to no coma. In layman's terms, it might be considered a very heavy nap.</p>
-
-<blockquote>
-    <p>Excuse me, do these effectively hide my thunder?</p>
-</blockquote>
-
-<p>How am I supposed to find someone willing to go into that musty old claptrap?</p>
-```
-
-However, if your template is as-follows, the quote will fail to render correctly:
+Here's how to solve that:
 
 ```
 <div markdown="1">
-{{ body }}
+    {{- block.markdownField -}}
 </div>
 ```
 
-"What in the name of Gruber?", you may very well demand.
+If you want to know more, Twig's documentation contains [detailed information about whitespace control][twig-whitespace].
 
-Well, it turns out that the line-break after the `div` will prompt Twig to auto-escape the `>`. As a result, the Markdown parser will never convert it to a `blockquote`.
-
-There are a couple of ways around this:
-
-```
-{# Option one: use the `raw` filter #}
-<div markdown="1">
-{{ body|raw }}
-</div>
-
-{# Option two: remove the line-breaks #}
-<div markdown="1">{{ body }}</div>
-```
-
-Note that the following, _will not_ work, for reasons best known to Twig:
-
-```
-{# Epic fail #}
-<div markdown="1">
-{{- body -}}
-</div>
-```
-
-It's enough to make you use a WYSIWYG.
-
+[twig-whitespace]: http://twig.sensiolabs.org/doc/1.x/templates.html#templates-whitespace-control
 
 ## Credits ##
 [Newspaper icon][icon] by [unlimicon][icon-author] from the [Noun Project][noun-project].
