@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/experience/article.craft-plugin.svg?branch=master)](https://travis-ci.org/experience/article.craft-plugin)
 
-Article has been built to solve a very specific problem: parsing Markdown-formatted content in Matrix fields. In particular, Markdown-formatted content which contains footnotes.
+Article solves a very specific problem: parsing Markdown-formatted content in Matrix fields. In particular, Markdown-formatted content which contains footnotes.
 
 You may be wondering why that requires a plugin.
 
