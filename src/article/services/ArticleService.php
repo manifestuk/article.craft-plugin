@@ -104,6 +104,6 @@ class ArticleService extends BaseApplicationComponent
      */
     protected function getBlockContent(MatrixBlockModel $block)
     {
-        return $block->getContent()->getAttributes();
+        return ['block' => $block];
     }
 }
