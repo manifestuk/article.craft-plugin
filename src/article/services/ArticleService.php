@@ -84,7 +84,8 @@ class ArticleService extends BaseApplicationComponent
     }
 
     /**
-     * Returns the name of the template for the given block.
+     * Returns the path to the template that will be used to render to the
+     * given block.
      *
      * @param MatrixBlockModel $block
      *
@@ -92,7 +93,8 @@ class ArticleService extends BaseApplicationComponent
      */
     protected function getBlockTemplate(MatrixBlockModel $block)
     {
-        return $block->getType()->getAttribute('handle');
+        return $this->templatesHelper->getBlockTemplatePath(
+            $block->getType()->getAttribute('handle'));
     }
 
     /**

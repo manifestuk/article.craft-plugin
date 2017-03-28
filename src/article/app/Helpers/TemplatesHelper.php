@@ -17,18 +17,18 @@ use Craft\TemplatesService;
 class TemplatesHelper
 {
     /**
+     * The "article" templates path, as configured in the plugin settings.
+     *
+     * @var string
+     */
+    protected $articleTemplatesPath;
+
+    /**
      * The original templates path.
      *
      * @var string
      */
     protected $originalTemplatesPath;
-
-    /**
-     * The plugin settings model.
-     *
-     * @var BaseModel
-     */
-    protected $pluginSettings;
 
     /**
      * The Craft TemplatesService.
@@ -49,6 +49,7 @@ class TemplatesHelper
     ) {
         $this->templatesService = $templatesService;
         $this->pluginSettings = $pluginSettings;
+        $this->articleTemplatesPath = $pluginSettings->getAttribute('templatesPath');
         $this->originalTemplatesPath = $this->templatesService->getTemplatesPath();
     }
 
@@ -57,23 +58,17 @@ class TemplatesHelper
      */
     public function overrideTemplatesPath()
     {
-        $path = $this->getConfiguredTemplatesPath();
-        $this->templatesService->setTemplatesPath($path);
+        $this->templatesService->setTemplatesPath($this->getSiteTemplatesPath());
     }
 
     /**
-     * Returns the full templates path, as configured in the plugin settings.
+     * Returns the full path to the site templates.
      *
      * @return string
      */
-    protected function getConfiguredTemplatesPath()
+    protected function getSiteTemplatesPath()
     {
-        $path = [
-            CRAFT_TEMPLATES_PATH,
-            $this->pluginSettings->getAttribute('templatesPath'),
-        ];
-
-        return realpath(implode('/', $path));
+        return CRAFT_TEMPLATES_PATH;
     }
 
     /**
@@ -82,5 +77,18 @@ class TemplatesHelper
     public function resetTemplatesPath()
     {
         $this->templatesService->setTemplatesPath($this->originalTemplatesPath);
+    }
+
+    /**
+     * Returns the path to the template identified by the given handle,
+     * relative to the site templates directory.
+     *
+     * @param string $handle
+     *
+     * @return string
+     */
+    public function getBlockTemplatePath($handle)
+    {
+        return implode('/', [$this->articleTemplatesPath, $handle]);
     }
 }
