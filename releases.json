@@ -1,5 +1,13 @@
 [
   {
+    "date": "2017-03-28T19:00:00+0000",
+    "downloadUrl": "https://github.com/experience/article.craft-plugin/releases/download/1.0.0/article-1.0.0.zip",
+    "notes": [
+      "[Added] Allow “article” templates to reference site templates outside of the plugin settings “template path”."
+    ],
+    "version": "1.1.0"
+  },
+  {
     "date": "2017-03-19T17:00:00+0000",
     "downloadUrl": "https://github.com/experience/article.craft-plugin/releases/download/1.0.0/article-1.0.0.zip",
     "notes": [
