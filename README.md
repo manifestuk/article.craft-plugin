@@ -24,7 +24,7 @@ Each release of Article is [automatically tested][build-status] against PHP 5.5 
 3. Navigate to the "Admin &rarr; Settings &rarr; Plugins" page, and activate Article.
 4. Configure Article, as described in the next section.
 
-[download]: https://github.com/experience/article.craft-plugin/releases/download/0.0.0/article-0.0.0.zip "Download the latest release"
+[download]: https://github.com/experience/article.craft-plugin/releases/latest "Download the latest release"
 
 ## Configuration ##
 Article makes no assumptions regarding the structure of your Matrix field, or the templates used to render the content.
