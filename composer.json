@@ -1,25 +1,39 @@
 {
   "name": "experience/article",
   "description": "Article eases the pain of rendering Matrix and Markdown-powered content.",
-  "version": "2.0.0",
   "type": "craft-plugin",
-  "minimum-stability": "dev",
-  "prefer-stable" : true,
+  "version": "2.0.0",
+  "keywords": [
+    "craft",
+    "cms",
+    "craftcms",
+    "craft-plugin",
+    "markdown",
+    "typography"
+  ],
+  "support": {
+    "docs": "https://github.com/experience/article.craft-plugin/blob/master/README.md",
+    "issues": "https://github.com/experience/article.craft-plugin/issues"
+  },
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Experience",
+      "homepage": "https://experiencehq.net"
+    }
+  ],
+  "require": {
+    "craftcms/cms": "^3.0.0",
+    "experience/smartdown": "^3.0.1"
+  },
   "autoload": {
     "psr-4": {
       "experience\\article\\": "src/"
     }
   },
-  "support": {
-    "email": "stephen@experiencehq.net"
-  },
   "extra": {
     "changelogUrl": "https://github.com/experience/article.craft-plugin/blob/master/CHANGELOG.md",
-    "documentationUrl": "https://github.com/experience/article.craft-plugin/blob/master/README.md",
     "class": "experience\\article\\Article",
-    "developer": "Experience",
-    "developerUrl": "https://experiencehq.net",
-    "downloadUrl": "https://github.com/experience/article.craft-plugin/archive/master.zip",
     "handle": "article",
     "hasCpSection": false,
     "hasSettings": true,
