@@ -6,27 +6,12 @@ You may be wondering why that requires a plugin.
 The truth is, it doesn't. You can achieve the same end result through a careful combination of Twig macros, includes, shouting, and despair. Article is just easier.
 
 ## Requirements
-Article uses [Smartdown][smartdown] to render your Markdown-formatted content. You must have version 3.0.0 or above installed and activated.
+Article uses [Smartdown][smartdown] to render your Markdown-formatted content. You must have version 3.0.1 or above installed and activated.
 
 [smartdown]: https://github.com/experience/smartdown.craft-plugin "Bringing the unbridled joy of Markdown Extra and Smartypants to your Craft websites."
 
 ## Installation
 Article is not available via the Craft Plugin Store, and probably never will be. If, by some miracle, you think Article would be of use in your Craft project, you can install it using Composer.
-
-First, open the `composer.json` file in the root of your Craft website, and add a `repositories` section, as follows:
-
-```json
-{
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/experience/article.craft-plugin"
-        }
-    ]
-}
-```
-
-Then install Article using Composer, as you would any other package:
 
 ```
 $ cd /path/to/site
